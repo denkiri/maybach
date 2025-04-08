@@ -1,3 +1,3 @@
 class BaseUrl {
-  static const String baseUrl = "http://45.79.97.25:8011/api/v1";
+  static const String baseUrl = "https://denkiri.com/api/v1";
 }
