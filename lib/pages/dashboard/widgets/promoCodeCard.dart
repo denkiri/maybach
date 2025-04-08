@@ -85,7 +85,7 @@ class PromoCodeCard extends StatelessWidget {
                   // Copy Button
                   GestureDetector(
                     onTap: () {
-                      Clipboard.setData(ClipboardData(text: 'https://denkiri.com/login?promo=$promoCode'));
+                      Clipboard.setData(ClipboardData(text: 'https://denkiri.github.io/login?promo=$promoCode'));
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Copied: $promoCode")),
                       );
