@@ -31,13 +31,17 @@
 
   <title>flutter_projects</title>
   <link rel="manifest" href="manifest.json">
-      <script type="text/javascript">
-      // Redirect all 404s to index.html so Flutter can handle routing
-      var redirectTo = '/index.html';
-      if (location.pathname !== '/') {
-        redirectTo += '?path=' + encodeURIComponent(location.pathname + location.search);
+    <script type="text/javascript">
+      var path = location.pathname;
+      var search = location.search;
+      var hash = location.hash;
+      
+      var redirectTo = '/maybach/index.html';
+      if (path !== '/maybach/') {
+        redirectTo += '?path=' + encodeURIComponent(path + search);
       }
-      window.location.replace(redirectTo + location.hash);
+
+      window.location.replace(redirectTo + hash);
     </script>
 </head>
 <body>
