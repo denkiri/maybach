@@ -89362,7 +89362,7 @@ r=A.ac(25)
 return A.cu(A.aH(q,A.aI(A.b([o,B.bf,s,B.y,A.aH(q,A.c_(A.b([new A.az(B.bb,A.ad(this.c,q,q,q,B.an,q,q),q),B.Uq,A.iK(q,A.aH(q,B.Kx,B.k,q,q,B.D9,50,q,q,50),B.M,!1,q,q,q,q,q,q,q,q,q,q,q,q,q,q,q,new A.aje(this,a),q,q,q,q,q,q)],n),B.o,B.m,B.n,q),B.k,q,q,new A.aN(B.Gd,q,q,r,q,q,B.t),50,q,q,q)],n),B.T,B.m,B.n),B.k,q,q,new A.aN(B.FG,q,q,p,q,q,B.t),q,q,B.di,q),q,q)}}
 A.aje.prototype={
 $0(){var s,r=null,q=this.a.c
-A.zv(new A.pG("https://denkiri.com/login?promo="+q))
+A.zv(new A.pG("https://denkiri.github.io/login?promo="+q))
 s=this.b.a7(t.Pu)
 s.toString
 s.f.kU(A.w8(r,r,r,r,r,B.x,r,A.ad("Copied: "+q,r,r,r,r,r,r),r,B.cy,r,r,r,r,r,r,r,r,r))},
