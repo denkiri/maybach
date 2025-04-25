@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class WhatsappWithdrawalCard extends StatelessWidget {
   final String data;
 
   const WhatsappWithdrawalCard({super.key, required this.data});
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final cardHeight = screenWidth < 600 ? 60.0 : 80.0; // Adjust height based on screen width
     return Container(
       width: 180,
-      height: 80,
+      height: cardHeight,
       decoration: BoxDecoration(
-        color: Colors.green,
+        color: const Color(0xFF2ECC71),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(

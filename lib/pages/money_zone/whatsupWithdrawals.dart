@@ -72,33 +72,19 @@ class _WhatsAppWithdrawalsPageState extends State<WhatsAppWithdrawalsPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildTextField(
-                          controller: phoneController,
-                          label: "MPESA PHONE NUMBER",
-                          hint: "Enter phone number",
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: _buildTextField(
-                          controller: amountController,
-                          label: "AMOUNT (MIN KES. 5,000)",
-                          hint: "Enter amount",
-                        ),
-                      ),
-                    ],
+                  _buildTextField(
+                    controller: phoneController,
+                    label: "MPESA PHONE NUMBER",
+                    hint: "Enter phone number",
                   ),
                   const SizedBox(height: 12),
-                  Row(
-                    children: [
-                     // Expanded(child: _buildBalanceContainer()),
-                      const SizedBox(width: 8),
-                      _buildWithdrawButton(withdrawViewModel),
-                    ],
+                  _buildTextField(
+                    controller: amountController,
+                    label: "AMOUNT (MIN KES. 5,000)",
+                    hint: "Enter amount",
                   ),
+                  const SizedBox(height: 12),
+                  _buildWithdrawButton(withdrawViewModel),
                 ],
               ),
             ),

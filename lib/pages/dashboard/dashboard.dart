@@ -2,6 +2,8 @@ import 'dart:html' as html;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/components/widgets/footer.dart';
+import 'package:flutter_projects/pages/custom/maybach_deal.dart';
+import 'package:flutter_projects/pages/custom/whatsup_linkage.dart';
 import 'package:flutter_projects/pages/dashboard/widgets/activePackage.dart';
 import 'package:flutter_projects/pages/dashboard/widgets/customAppBar.dart';
 import 'package:flutter_projects/pages/dashboard/widgets/depositBalance.dart';
@@ -122,6 +124,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case '/teams':return const TeamsPage();
       case '/withdrawals':return const WithdrawalPage();
       case '/transfer':return const TransferPage();
+      case '/maybach-deal':return const MaybachDealPage();
+      case '/whatsup-linkage':return const WhatsupLinkagePage();
       //case '/settings':return const SettingsPage();
       //case '/settings':return const TeamsPage();
       default:
@@ -227,7 +231,7 @@ class DashboardPage extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -246,39 +250,75 @@ class DashboardPage extends StatelessWidget {
 
                           LayoutBuilder(
                             builder: (context, constraints) {
-                              int crossAxisCount = _calculateCrossAxisCount(constraints.maxWidth);
-                              double aspectRatio = _calculateAspectRatio(constraints.maxWidth);
-
-                              return GridView.count(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                crossAxisCount: crossAxisCount,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                                childAspectRatio: aspectRatio,
-                                 children: [
-
-                                  WhatsappBalanceCard(
-                                      data: viewModel.dashboardData!.details.whatsappEarnings.balance.toString()),
-                                  WhatsappWithdrawalCard(
-                                      data: viewModel.dashboardData!.details.whatsappEarnings.totalWithdrawals.toString()),
-                                   ActivePackageCard(
-                                     data: viewModel.dashboardData!.details.activePackage?.name ?? "No active package",
-                                   ),
-                                  DepositBalanceCard(
-                                      data: viewModel.dashboardData!.details.userDeposit.toString()),
-                                  TopEarnersCard(
-                                      topEarners: topEarnersMapList),
-                                  const InvestmentPlanCard(
-                                     ),
-                                  PromoCodeCard(
-                                      promoCode: viewModel.dashboardData!.details.promoCode.referralCode,inviter: viewModel.dashboardData!.details.promoCode.referredBy,),
-                                  WalletBalanceCard(
-                                      data: viewModel.dashboardData!.details.wallet.balance.toString()),
-                                  TotalWithdrawnCard(
-                                      data: viewModel.dashboardData!.details.withdrawals.toString()),
-                                ],
-                              );
+                              if (constraints.maxWidth < 600) {
+                                // Use ListView.builder for mobile phone sizes
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: 9, // Number of cards
+                                  itemBuilder: (context, index) {
+                                    final cards = [
+                                      WhatsappBalanceCard(
+                                          data: viewModel.dashboardData!.details.whatsappEarnings.balance.toString()),
+                                      WhatsappWithdrawalCard(
+                                          data: viewModel.dashboardData!.details.whatsappEarnings.totalWithdrawals.toString()),
+                                      ActivePackageCard(
+                                        data: viewModel.dashboardData!.details.activePackage?.name ?? "No active package",
+                                      ),
+                                      DepositBalanceCard(
+                                          data: viewModel.dashboardData!.details.userDeposit.toString()),
+                                      TopEarnersCard(
+                                          topEarners: topEarnersMapList),
+                                      const InvestmentPlanCard(),
+                                      PromoCodeCard(
+                                          promoCode: viewModel.dashboardData!.details.promoCode.referralCode,
+                                          inviter: viewModel.dashboardData!.details.promoCode.referredBy),
+                                      WalletBalanceCard(
+                                          data: viewModel.dashboardData!.details.wallet.balance.toString()),
+                                      TotalWithdrawnCard(
+                                          data: viewModel.dashboardData!.details.withdrawals.toString()),
+                                    ];
+return Padding(
+  padding: const EdgeInsets.all(8.0), // Add padding around the box
+  child: SizedBox(
+    height: 130, // Fixed height for each card
+    child: cards[index],
+  ),
+);
+                                  },
+                                );
+                              } else {
+                                // Use GridView for larger screens
+                                return GridView.count(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  crossAxisCount: _calculateCrossAxisCount(constraints.maxWidth),
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
+                                  childAspectRatio: _calculateAspectRatio(constraints.maxWidth),
+                                  children: [
+                                    WhatsappBalanceCard(
+                                        data: viewModel.dashboardData!.details.whatsappEarnings.balance.toString()),
+                                    WhatsappWithdrawalCard(
+                                        data: viewModel.dashboardData!.details.whatsappEarnings.totalWithdrawals.toString()),
+                                    ActivePackageCard(
+                                      data: viewModel.dashboardData!.details.activePackage?.name ?? "No active package",
+                                    ),
+                                    DepositBalanceCard(
+                                        data: viewModel.dashboardData!.details.userDeposit.toString()),
+                                    TopEarnersCard(
+                                        topEarners: topEarnersMapList),
+                                    const InvestmentPlanCard(),
+                                    PromoCodeCard(
+                                        promoCode: viewModel.dashboardData!.details.promoCode.referralCode,
+                                        inviter: viewModel.dashboardData!.details.promoCode.referredBy),
+                                    WalletBalanceCard(
+                                        data: viewModel.dashboardData!.details.wallet.balance.toString()),
+                                    TotalWithdrawnCard(
+                                        data: viewModel.dashboardData!.details.withdrawals.toString()),
+                                  ],
+                                );
+                              }
                             },
                           ),
                     ],
@@ -296,20 +336,20 @@ class DashboardPage extends StatelessWidget {
     if (maxWidth >= 1200) return 4;
     if (maxWidth >= 800) return 3;
     if (maxWidth >= 600) return 2;
-    return 1;
+    return 1; // Show one card on small mobile screens
   }
 
   double _calculateAspectRatio(double maxWidth) {
     if (maxWidth >= 1200) return 2.5;
     if (maxWidth >= 800) return 2.0;
     if (maxWidth >= 600) return 1.8;
-    return 1.5;
+    return 3.0; // Higher ratio = more width, less height
   }
 
   Widget _buildNotificationCard(DashboardViewModel viewModel) {
     final notificationMessage = viewModel.dashboardData?.details.latestNotification?.message ?? "No new notifications";
     return Card(
-      color: Colors.green,
+      color: Colors.purple,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: ListTile(
           leading: const Icon(Icons.notifications, color: Colors.white),

@@ -10,9 +10,9 @@ class ActivePackageCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Colors.orange, Colors.indigo],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          colors: [Colors.yellowAccent,Colors.deepOrange,Colors.deepOrange,Colors.deepOrange],
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
         ),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [

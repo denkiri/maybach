@@ -9,7 +9,7 @@ class WalletBalanceCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Colors.black, Color(0xFFB31217)], // Red gradient
+          colors: [Color(0xFFB31217), Color(0xFFB31217)], // Red gradient
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),

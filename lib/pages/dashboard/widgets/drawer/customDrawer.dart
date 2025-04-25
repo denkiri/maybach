@@ -2,6 +2,7 @@ import 'dart:html' as html;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../../routes.dart';
 class CustomDrawer extends StatelessWidget {
   final String currentRoute;
@@ -20,9 +21,7 @@ class CustomDrawer extends StatelessWidget {
         width: 250,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors:
-              [Color(0xFF1976D2), Color(0xFF8E24AA)]
-            ,
+            colors: [Color(0xFF1976D2), Color(0xFF8E24AA)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -61,16 +60,7 @@ class CustomDrawer extends StatelessWidget {
                       "Bonus Withdrawals": '/bonus-withdrawals',
                     },
                   ),
-                  _buildExpandableTile(
-                    context,
-                    Icons.money,
-                    "Dolar Zone",
-                    {
-                      "Certification": '/certification',
-                      "Advertising Agent": '/advertising-agent',
-                      "Verification": '/verification',
-                    },
-                  ),
+
                   _buildExpandableTile(
                     context,
                     Icons.favorite,
@@ -88,6 +78,18 @@ class CustomDrawer extends StatelessWidget {
                     {
                       "Remotasks": '/remotasks',
                       "Cloudworkers": '/cloudworkers',
+                    },
+                  ),
+                  // _buildNavItem(Icons.account_balance_wallet, "Maybach Deal", '/maybach-deal'),
+                  // _buildNavItem(FontAwesomeIcons.whatsapp, "Whatsup Linkage", '/whatsup-linkage'),
+                  _buildExpandableTile(
+                    context,
+                    Icons.money,
+                    "Dolar Zone",
+                    {
+                      "Certification": '/certification',
+                      "Advertising Agent": '/advertising-agent',
+                      "Verification": '/verification',
                     },
                   ),
                   _buildNavItem(Icons.star, "Starlink", '/starlink'),
@@ -111,6 +113,22 @@ class CustomDrawer extends StatelessWidget {
                     {
                       "Withdrawals": '/withdrawals',
                       "Transfer": '/transfer',
+                    },
+                  ),
+                  _buildExpandableTile(
+                    context,
+                    Icons.account_balance_wallet,
+                    "Maybach Deal",
+                    {
+                      "Memebership": '/maybach-deal',
+                    },
+                  ),
+                  _buildExpandableTile(
+                    context,
+                    FontAwesomeIcons.whatsapp,
+                    "Whatsup Linkage",
+                    {
+                      "Whatsup Linkage Package": '/whatsup-linkage',
                     },
                   ),
                   //_buildNavItem(Icons.settings, "Settings", '/settings'),

@@ -38,6 +38,24 @@ class PackageViewModel extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
+  Future<void> loadMayBachPackage() async {
+    isLoading = true;
+    notifyListeners();
+
+    package = await _service.fetchMayBachPackage();
+
+    isLoading = false;
+    notifyListeners();
+  }
+  Future<void> loadWhatsupLinkagePackage() async {
+    isLoading = true;
+    notifyListeners();
+
+    package = await _service.fetchWhatsupLinkagePackage();
+
+    isLoading = false;
+    notifyListeners();
+  }
   //BONUS
   Future<void> loadWelcomePackage() async {
     isLoading = true;

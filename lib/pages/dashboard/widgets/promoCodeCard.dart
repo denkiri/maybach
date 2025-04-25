@@ -28,11 +28,11 @@ class PromoCodeCard extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                    fontSize: 14,
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: const Color(0xFF0E8052), // Darker green badge
                     borderRadius: BorderRadius.circular(12),
@@ -41,7 +41,7 @@ class PromoCodeCard extends StatelessWidget {
                     "Invited by $inviter",
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 12,
+                      fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -85,7 +85,7 @@ class PromoCodeCard extends StatelessWidget {
                   // Copy Button
                   GestureDetector(
                     onTap: () {
-                      Clipboard.setData(ClipboardData(text: 'https://denkiri.github.io/login?promo=$promoCode'));
+                      Clipboard.setData(ClipboardData(text: 'https://maybachmotors.co.ke/login?promo=$promoCode'));
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Copied: $promoCode")),
                       );

@@ -47,10 +47,12 @@ class _AdsPageState extends State<AdsPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Container(
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
             color: Colors.cyan,
+
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: const Center(
@@ -71,52 +73,55 @@ class _AdsPageState extends State<AdsPage> {
           ? const Center(child: Text("No ads available"))
           : Padding(
         padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
+child: ListView.builder(
+  itemCount: adViewModel.ads.length,
+  itemBuilder: (context, index) {
+    final ad = adViewModel.ads[index];
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CachedNetworkImage(
+            imageUrl: ad.file.fileUrl,
+            placeholder: (context, url) =>
+                const Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) =>
+                const Icon(Icons.error),
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: 200, // Constrain height for better mobile experience
           ),
-          itemCount: adViewModel.ads.length,
-          itemBuilder: (context, index) {
-            final ad = adViewModel.ads[index];
-            return Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: CachedNetworkImage(
-                      imageUrl: ad.file.fileUrl,
-                      placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>
-                      const Icon(Icons.error),
-                      fit: BoxFit.cover,
-                      width: double.infinity,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () => downloadImage(ad.file.fileUrl, ad.file.name),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () => downloadImage(ad.file.fileUrl, ad.file.name),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                      child: Text("Download", style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    child: Text("Download", style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
-                ],
-              ),
-            );
-          },
-        ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  },
+),
       ),
     );
   }

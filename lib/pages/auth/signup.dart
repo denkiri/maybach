@@ -232,8 +232,15 @@ class _SignupScreenState extends State<Signup> {
       body: Stack(
         children: [
           // Background Image with Gradient Overlay
-          const BackgroundWithGradient(imagePath: "assets/images/maybach.png"),
-
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF1976D2), Color(0xFF8E24AA)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
           Column(
             children: [
               // Top Navigation Bar

@@ -10,7 +10,7 @@ class WhatsappBalanceCard extends StatelessWidget {
       width: 180,
       height: 80,
       decoration: BoxDecoration(
-        color: Colors.lightGreen,
+        color: Colors.green,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(

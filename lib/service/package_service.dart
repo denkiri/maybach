@@ -97,6 +97,67 @@ class PackageService {
     }
     return null;
   }
+  Future<PackageModel?> fetchMayBachPackage() async {
+    const String url = '${BaseUrl.baseUrl}/packages?filter=CUSTOM&search=MAYBACK_DEAL';
+    try {
+      String? jwtToken = await storage.read(key:'jwt_token');
+      String? refreshToken = await storage.read(key:'refresh_token');
+
+      if (jwtToken == null || refreshToken == null) {
+        print("Error: Missing tokens");
+        return null;
+      }
+
+      Response response = await _dio.get(
+        url,
+        options: Options(
+          headers: {
+            "Authorization":"Bearer $refreshToken",
+            "JWTAUTH":"Bearer $jwtToken",
+            "Content-Type":"application/json",
+          },
+        ),
+      );
+
+      if (response.statusCode == 200 && response.data.isNotEmpty) {
+        return PackageModel.fromJson(response.data[0]);
+      }
+    } catch (e) {
+      print("Error fetching package: $e");
+    }
+    return null;
+  }
+  Future<PackageModel?> fetchWhatsupLinkagePackage() async {
+    const String url = '${BaseUrl.baseUrl}/packages?filter=CUSTOM&search=WHATSUP_LINKAGE';
+    try {
+      String? jwtToken = await storage.read(key:'jwt_token');
+      String? refreshToken = await storage.read(key:'refresh_token');
+
+      if (jwtToken == null || refreshToken == null) {
+        print("Error: Missing tokens");
+        return null;
+      }
+
+      Response response = await _dio.get(
+        url,
+        options: Options(
+          headers: {
+            "Authorization":"Bearer $refreshToken",
+            "JWTAUTH":"Bearer $jwtToken",
+            "Content-Type":"application/json",
+          },
+        ),
+      );
+
+      if (response.statusCode == 200 && response.data.isNotEmpty) {
+        return PackageModel.fromJson(response.data[0]);
+      }
+    } catch (e) {
+      print("Error fetching package: $e");
+    }
+    return null;
+  }
+
   //BONUS
   Future<PackageModel?> fetchWelcomePackage() async {
     const String url = '${BaseUrl.baseUrl}/packages?filter=BONUS&search=WELCOME';

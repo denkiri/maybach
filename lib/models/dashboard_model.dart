@@ -5,7 +5,7 @@ class DashboardModel {
 
   factory DashboardModel.fromJson(Map<String, dynamic> json) {
     return DashboardModel(
-      details: Details.fromJson(json['details']),
+      details: Details.fromJson(json['details'] ?? {}),
     );
   }
 }
@@ -23,7 +23,7 @@ class Details {
   final int withdrawals;
   final double cashbackBonus;
   final LatestNotification? latestNotification;
-  final List<TopEarner> topEarners;  // Added top_earners field
+  final List<TopEarner> topEarners;
 
   Details({
     required this.id,
@@ -38,46 +38,28 @@ class Details {
     required this.withdrawals,
     required this.cashbackBonus,
     required this.latestNotification,
-    required this.topEarners,  // Initialize topEarners
+    required this.topEarners,
   });
 
   factory Details.fromJson(Map<String, dynamic> json) {
-    var topEarnersList = json['top_earners'] != null
-        ? (json['top_earners'] as List).map((i) => TopEarner.fromJson(i)).toList()
-        : <TopEarner>[];
-
     return Details(
-      id: json['id'],
-      username: json['username'],
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      wallet: Wallet.fromJson(json['wallet']),
-      activePackage: json['active_package'] != null && json['active_package'].isNotEmpty
+      id: json['id'] ?? '',
+      username: json['username'] ?? '',
+      firstName: json['first_name'] ?? '',
+      lastName: json['last_name'] ?? '',
+      wallet: Wallet.fromJson(json['wallet'] ?? {}),
+      activePackage: (json['active_package'] as Map).isNotEmpty
           ? ActivePackage.fromJson(json['active_package'])
           : null,
-      promoCode: PromoCode.fromJson(json['promo_code']),
-      userDeposit: json['user_deposit']?.toDouble() ?? 0.0,
-      whatsappEarnings: WhatsappEarnings.fromJson(json['whatsapp_earnings']),
+      promoCode: PromoCode.fromJson(json['promo_code'] ?? {}),
+      userDeposit: (json['user_deposit'] ?? 0).toDouble(),
+      whatsappEarnings: WhatsappEarnings.fromJson(json['whatsapp_earnings'] ?? {}),
       withdrawals: json['withdrawals'] ?? 0,
-      cashbackBonus: json['cashback_bonus']?.toDouble() ?? 0.0,
-      latestNotification: json['latest_notification'] != null
+      cashbackBonus: (json['cashback_bonus'] ?? 0).toDouble(),
+      latestNotification: (json['latest_notification'] as Map).isNotEmpty
           ? LatestNotification.fromJson(json['latest_notification'])
           : null,
-      topEarners: topEarnersList,  // Assign the top earners list
-    );
-  }
-}
-
-class TopEarner {
-  final String user;
-  final String totalEarnings;
-
-  TopEarner({required this.user, required this.totalEarnings});
-
-  factory TopEarner.fromJson(Map<String, dynamic> json) {
-    return TopEarner(
-      user: json['user'],
-      totalEarnings: json['total_earnings'],
+      topEarners: (json['top_earners'] as List?)?.map((e) => TopEarner.fromJson(e)).toList() ?? [],
     );
   }
 }
@@ -90,8 +72,8 @@ class Wallet {
 
   factory Wallet.fromJson(Map<String, dynamic> json) {
     return Wallet(
-      id: json['id'],
-      balance: json['balance']?.toDouble() ?? 0.0,
+      id: json['id'] ?? '',
+      balance: (json['balance'] ?? 0).toDouble(),
     );
   }
 }
@@ -105,9 +87,9 @@ class ActivePackage {
 
   factory ActivePackage.fromJson(Map<String, dynamic> json) {
     return ActivePackage(
-      id: json['id'],
-      name: json['name'],
-      price: json['price']?.toDouble() ?? 0.0,
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      price: (json['price'] ?? 0).toDouble(),
     );
   }
 }
@@ -120,8 +102,8 @@ class PromoCode {
 
   factory PromoCode.fromJson(Map<String, dynamic> json) {
     return PromoCode(
-      referralCode: json['referral_code'],
-      referredBy: json['referred_by'],
+      referralCode: json['referral_code'] ?? '',
+      referredBy: json['referred_by'] ?? '',
     );
   }
 }
@@ -134,8 +116,8 @@ class WhatsappEarnings {
 
   factory WhatsappEarnings.fromJson(Map<String, dynamic> json) {
     return WhatsappEarnings(
-      totalWithdrawals: json['total_withdrawals']?.toDouble() ?? 0.0,
-      balance: json['balance']?.toDouble() ?? 0.0,
+      totalWithdrawals: (json['total_withdrawals'] ?? 0).toDouble(),
+      balance: (json['balance'] ?? 0).toDouble(),
     );
   }
 }
@@ -145,13 +127,31 @@ class LatestNotification {
   final String message;
   final String dateCreated;
 
-  LatestNotification({required this.id, required this.message, required this.dateCreated});
+  LatestNotification({
+    required this.id,
+    required this.message,
+    required this.dateCreated,
+  });
 
   factory LatestNotification.fromJson(Map<String, dynamic> json) {
     return LatestNotification(
-      id: json['id'],
-      message: json['message'],
-      dateCreated: json['date_created'],
+      id: json['id'] ?? '',
+      message: json['message'] ?? '',
+      dateCreated: json['date_created'] ?? '',
+    );
+  }
+}
+
+class TopEarner {
+  final String user;
+  final String totalEarnings;
+
+  TopEarner({required this.user, required this.totalEarnings});
+
+  factory TopEarner.fromJson(Map<String, dynamic> json) {
+    return TopEarner(
+      user: json['user'] ?? '',
+      totalEarnings: json['total_earnings'] ?? '',
     );
   }
 }

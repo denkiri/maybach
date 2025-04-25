@@ -95,88 +95,76 @@ class _SubmitViewPageState extends State<SubmitViewPage> {
       backgroundColor: Colors.grey[200],
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                gradient: const LinearGradient(
-                  colors: [Colors.green, Colors.teal],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: const LinearGradient(
+                    colors: [Colors.green, Colors.teal],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "SUBMIT WHATSAPP VIEWS",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildTextField(
+                      controller: phoneController,
+                      label: "PHONE NUMBER",
+                      hint: "Enter phone number",
+                      keyboardType: TextInputType.phone,
+                    ),
+                    const SizedBox(height: 12),
+                    _buildTextField(
+                      controller: viewsController,
+                      label: "NUMBER OF VIEWS (MIN 10 - MAX 400)",
+                      hint: "Enter views",
+                      keyboardType: TextInputType.number,
+                    ),
+                    const SizedBox(height: 12),
+                    _buildFilePicker(),
+                    const SizedBox(height: 12),
+                    _buildSubmitButton(),
+                    if (_selectedFileName != null) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        "Selected file: $_selectedFileName",
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ],
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "SUBMIT WHATSAPP VIEWS",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildTextField(
-                          controller: phoneController,
-                          label: "PHONE NUMBER",
-                          hint: "Enter phone number",
-                          keyboardType: TextInputType.phone,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: _buildTextField(
-                          controller: viewsController,
-                          label: "NUMBER OF VIEWS (MIN 10 - MAX 400)",
-                          hint: "Enter views",
-                          keyboardType: TextInputType.number,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildFilePicker(),
-                      ),
-                      const SizedBox(width: 8),
-                      _buildSubmitButton(),
-                    ],
-                  ),
-                  if (_selectedFileName != null) ...[
-                    const SizedBox(height: 12),
-                    Text(
-                      "Selected file: $_selectedFileName",
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ],
+              const SizedBox(height: 24),
+              _buildNoRecordsText(),
+              Consumer<SubmitViewsViewModel>(
+                builder: (context, viewModel, child) {
+                  if (viewModel.submitResponse != null) {
+                    Future.delayed(const Duration(seconds: 3), () {
+                      if (mounted) {
+                        viewModel.clearResponse();
+                      }
+                    });
+                    return _buildResponseMessage(viewModel.submitResponse!);
+                  }
+                  return const SizedBox.shrink();
+                },
               ),
-            ),
-            const SizedBox(height: 24),
-            _buildNoRecordsText(),
-            Consumer<SubmitViewsViewModel>(
-              builder: (context, viewModel, child) {
-                if (viewModel.submitResponse != null) {
-                  // Schedule auto-dismiss after 3 seconds
-                  Future.delayed(const Duration(seconds: 3), () {
-                    if (mounted) {
-                      viewModel.clearResponse();
-                    }
-                  });
-                  return _buildResponseMessage(viewModel.submitResponse!);
-                }
-                return const SizedBox.shrink();
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

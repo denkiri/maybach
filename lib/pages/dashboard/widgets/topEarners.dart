@@ -31,7 +31,7 @@ class TopEarnersCard extends StatelessWidget {
         children: [
           // Header section similar to WhatsApp card
           Container(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(2),
             decoration: const BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.white24, width: 1)),
             ),
@@ -54,7 +54,7 @@ class TopEarnersCard extends StatelessWidget {
           // Swiper section
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(2.0),
               child: Swiper(
                 itemCount: topEarners.length,
                 autoplay: true,
@@ -68,7 +68,7 @@ class TopEarnersCard extends StatelessWidget {
                         label: earner['user'] ?? 'Unknown',
                         isHighlighted: index == 0, // Highlight top earner
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 2),
                       _buildEarnerRow(
                         icon: FontAwesomeIcons.coins,
                         label: "${earner['total_earnings'] ?? '0'} KES",
@@ -80,7 +80,7 @@ class TopEarnersCard extends StatelessWidget {
                           child: FaIcon(
                             FontAwesomeIcons.trophy,
                             color: Colors.amber,
-                            size: 24,
+                            size: 20,
                           ),
                         ),
                     ],

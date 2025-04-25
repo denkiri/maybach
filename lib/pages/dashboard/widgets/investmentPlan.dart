@@ -50,7 +50,7 @@ class _InvestmentPlanCardState extends State<InvestmentPlanCard> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 400, // Fixed width
+        width: double.infinity, // Fixed width
         height: 300, // Fixed height
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(

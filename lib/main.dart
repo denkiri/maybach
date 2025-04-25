@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_projects/viewmodel/account_viewmodel.dart';
 import 'package:flutter_projects/viewmodel/ad_viewmodel.dart';
 import 'package:flutter_projects/viewmodel/auth_viewmodel.dart';
 import 'package:flutter_projects/viewmodel/dashboard_viewmodel.dart';
@@ -27,6 +28,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => WithdrawViewModel()),
         ChangeNotifierProvider(create: (_) => AdViewModel()),
         ChangeNotifierProvider(create: (_) => NotificationViewModel()),
+        ChangeNotifierProvider(create: (_) => AccountViewModel()),
       ],
       child: const MyApp(),
     ),

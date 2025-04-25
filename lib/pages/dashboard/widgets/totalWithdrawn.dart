@@ -63,7 +63,7 @@ class TotalWithdrawnCard extends StatelessWidget {
               child: Icon(
                 Icons.attach_money, // Dollar Icon
                 color: Colors.white.withOpacity(0.9),
-                size: 60,
+                size: 40,
               ),
             ),
           ),

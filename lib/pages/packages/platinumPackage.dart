@@ -23,102 +23,125 @@ class _PlatinumPackagePageState extends State<PlatinumPackagePage> {
     final packageViewModel = Provider.of<PackageViewModel>(context);
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: packageViewModel.isLoading
-            ? const CircularProgressIndicator()
-            : packageViewModel.package == null
-            ? const Text("Failed to load package")
-            : Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Container(
-            width: 320,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              gradient: const LinearGradient(
-                colors: [Colors.green, Colors.lightGreen],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+      backgroundColor: Colors.grey[100],
+      body: SingleChildScrollView(
+        child: Center(
+          child: packageViewModel.isLoading
+              ? const CircularProgressIndicator()
+              : packageViewModel.package == null
+              ? const Text("Failed to load package")
+              : Card(
+            elevation: 6,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
-                  ),
-                  child: Image.asset(
-                    'assets/images/platinum_banner.png',
-                    width: double.infinity,
-                    height: 120,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  "KES. ${packageViewModel.package!.price}",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  packageViewModel.package!.name,
-                  style: const TextStyle(
-                      fontSize: 16, color: Colors.white70),
-                ),
-                const SizedBox(height: 12),
-                Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    packageViewModel.package!.description,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: packageViewModel.isPurchasing
-                      ? null
-                      : () {
-                    // Handle package purchase
-                    packageViewModel.purchasePackage(
-                      packageViewModel.package!.id,
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+            child: Container(
+              width: 340,
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.asset(
+                        'assets/images/platinum_banner.png',
+                        width: 340,
+                        height: 340,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                  child: packageViewModel.isPurchasing
-                      ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
+                  const SizedBox(height: 12),
+                  Container(
+                    width: 340,
+                    margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                    padding: const EdgeInsets.all(12.0),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                  )
-                      : const Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
-                    child: Text("Buy Package",
+                    child: Column(
+                      children: [
+                        Text(
+                          "KES. ${packageViewModel.package!.price}",
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          "${packageViewModel.package!.name} Package",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+child: Text(
+  "•⁠  ⁠WhatsApp earnings four days in a week\n"
+      "•⁠  ⁠5,000 welcome bonus\n"
+      "•⁠  ⁠24/7 Customer support\n"
+      "•⁠  ⁠5,000 cashback bonus\n"
+      "•⁠  ⁠Annual package renewals",
+  textAlign: TextAlign.center,
+  style: TextStyle(
+    color: Colors.white,
+    fontSize: 14,
+  ),
+),
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: ElevatedButton(
+                      onPressed: packageViewModel.isPurchasing
+                          ? null
+                          : () {
+                        packageViewModel.purchasePackage(
+                          packageViewModel.package!.id,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        minimumSize: const Size.fromHeight(50),
+                      ),
+                      child: packageViewModel.isPurchasing
+                          ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                          : const Text(
+                        "Buy Package",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold)),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
-              ],
+                  const SizedBox(height: 16),
+                ],
+              ),
             ),
           ),
         ),

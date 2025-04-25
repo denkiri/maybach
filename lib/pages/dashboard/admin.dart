@@ -2,6 +2,9 @@ import 'dart:html' as html;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/components/widgets/footer.dart';
+import 'package:flutter_projects/pages/accounts/accounts.dart';
+import 'package:flutter_projects/pages/custom/maybach_deal.dart';
+import 'package:flutter_projects/pages/custom/whatsup_linkage.dart';
 import 'package:flutter_projects/pages/dashboard/widgets/activePackage.dart';
 import 'package:flutter_projects/pages/dashboard/widgets/customAppBar.dart';
 import 'package:flutter_projects/pages/dashboard/widgets/depositBalance.dart';
@@ -83,23 +86,26 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       case '/upload_ads': return const UploadAdsPage();
       case '/whatsup-withdrawals': return WhatsAppWithdrawalsPage();
       case '/bonus-withdrawals': return const BonusWithdrawalsPage();
-      case '/certification': return const CertificationPage();
-      case '/advertising-agent': return const AdvertisingAgentPage();
-      case '/verification': return const VerificationPage();
-      case '/welcome-bonus': return const WelcomeBonusPage();
-      case '/cashback-bonus': return const CashBackBonusPage();
-      case '/pro-bonus': return const ProBonusPage();
-      case '/cashback': return const CashbackPage();
-      case '/remotasks': return const RemotasksPage();
-      case '/cloudworkers': return const CloudworkersPage();
+      case '/certification': return const UpdateCertificationPackagePage();
+      case '/advertising-agent': return const UpdateAdvertisingAgencyPackagePage();
+      case '/verification': return const UpdateVerificationPackagePage();
+      case '/welcome-bonus': return const UpdateWelcomeBonusPackagePage();
+      case '/cashback-bonus': return const UpdateCashBackBonusPackagePage();
+      case '/pro-bonus': return const UpdateProBonusPackagePage();
+      case '/cashback': return const UpdateCashBackBonusPackagePage();
+      case '/remotasks': return const UpdateRemotasksPackagePage();
+      case '/cloudworkers': return const UpdateCloudWorkersPackagePage();
       case '/starlink': return const StarlinkPackagesPage();
       case '/monetized-ads': return const AdsPage();
       case '/jobs': return const JobListingPage();
       case '/apply': return const ApplyLoanPage();
       case '/history': return const LoanHistoryPage();
-      case '/clearance': return const ClearancePage();
+      case '/clearance': return const UpdateClearancePackagePage();
+      case '/maybach-deal': return const UpdateMaybachDealPackagePage();
+      case '/whatsup-linkage': return const UpdateWhatsupLinkagePackagePage();
       case '/teams': return const TeamsPage();
       case '/settings': return const TeamsPage();
+      case '/manage_accounts': return const AccountsPage();
       default: return const AdminDashboardPage();
     }
   }
@@ -199,7 +205,7 @@ class AdminDashboardPage extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -215,40 +221,78 @@ class AdminDashboardPage extends StatelessWidget {
                           ),
                         )
                       else if (viewModel.dashboardData != null)
+
                           LayoutBuilder(
                             builder: (context, constraints) {
-                              int crossAxisCount = _calculateCrossAxisCount(constraints.maxWidth);
-                              double aspectRatio = _calculateAspectRatio(constraints.maxWidth);
-
-                              return GridView.count(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                crossAxisCount: crossAxisCount,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                                childAspectRatio: aspectRatio,
-                                children: [
-                                  WhatsappBalanceCard(
-                                      data: viewModel.dashboardData!.details.whatsappEarnings.balance.toString()),
-                                  WhatsappWithdrawalCard(
-                                      data: viewModel.dashboardData!.details.whatsappEarnings.totalWithdrawals.toString()),
-                                  ActivePackageCard(
-                                    data: viewModel.dashboardData!.details.activePackage?.name ?? "No active package",
-                                  ),
-                                  DepositBalanceCard(
-                                      data: viewModel.dashboardData!.details.userDeposit.toString()),
-                                  TopEarnersCard(
-                                    topEarners: topEarnersMapList),
-                                  const InvestmentPlanCard(
-                                  ),
-                                  PromoCodeCard(
-                                    promoCode: viewModel.dashboardData!.details.promoCode.referralCode,inviter: viewModel.dashboardData!.details.promoCode.referredBy,),
-                                  WalletBalanceCard(
-                                      data: viewModel.dashboardData!.details.wallet.balance.toString()),
-                                  TotalWithdrawnCard(
-                                      data: viewModel.dashboardData!.details.withdrawals.toString()),
-                                ],
-                              );
+                              if (constraints.maxWidth < 600) {
+                                // Use ListView.builder for mobile phone sizes
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: 9, // Number of cards
+                                  itemBuilder: (context, index) {
+                                    final cards = [
+                                      WhatsappBalanceCard(
+                                          data: viewModel.dashboardData!.details.whatsappEarnings.balance.toString()),
+                                      WhatsappWithdrawalCard(
+                                          data: viewModel.dashboardData!.details.whatsappEarnings.totalWithdrawals.toString()),
+                                      ActivePackageCard(
+                                        data: viewModel.dashboardData!.details.activePackage?.name ?? "No active package",
+                                      ),
+                                      DepositBalanceCard(
+                                          data: viewModel.dashboardData!.details.userDeposit.toString()),
+                                      TopEarnersCard(
+                                          topEarners: topEarnersMapList),
+                                      const InvestmentPlanCard(),
+                                      PromoCodeCard(
+                                          promoCode: viewModel.dashboardData!.details.promoCode.referralCode,
+                                          inviter: viewModel.dashboardData!.details.promoCode.referredBy),
+                                      WalletBalanceCard(
+                                          data: viewModel.dashboardData!.details.wallet.balance.toString()),
+                                      TotalWithdrawnCard(
+                                          data: viewModel.dashboardData!.details.withdrawals.toString()),
+                                    ];
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0), // Add padding around the box
+                                      child: SizedBox(
+                                        height: 130, // Fixed height for each card
+                                        child: cards[index],
+                                      ),
+                                    );
+                                  },
+                                );
+                              } else {
+                                // Use GridView for larger screens
+                                return GridView.count(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  crossAxisCount: _calculateCrossAxisCount(constraints.maxWidth),
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
+                                  childAspectRatio: _calculateAspectRatio(constraints.maxWidth),
+                                  children: [
+                                    WhatsappBalanceCard(
+                                        data: viewModel.dashboardData!.details.whatsappEarnings.balance.toString()),
+                                    WhatsappWithdrawalCard(
+                                        data: viewModel.dashboardData!.details.whatsappEarnings.totalWithdrawals.toString()),
+                                    ActivePackageCard(
+                                      data: viewModel.dashboardData!.details.activePackage?.name ?? "No active package",
+                                    ),
+                                    DepositBalanceCard(
+                                        data: viewModel.dashboardData!.details.userDeposit.toString()),
+                                    TopEarnersCard(
+                                        topEarners: topEarnersMapList),
+                                    const InvestmentPlanCard(),
+                                    PromoCodeCard(
+                                        promoCode: viewModel.dashboardData!.details.promoCode.referralCode,
+                                        inviter: viewModel.dashboardData!.details.promoCode.referredBy),
+                                    WalletBalanceCard(
+                                        data: viewModel.dashboardData!.details.wallet.balance.toString()),
+                                    TotalWithdrawnCard(
+                                        data: viewModel.dashboardData!.details.withdrawals.toString()),
+                                  ],
+                                );
+                              }
                             },
                           ),
                     ],
@@ -266,20 +310,20 @@ class AdminDashboardPage extends StatelessWidget {
     if (maxWidth >= 1200) return 4;
     if (maxWidth >= 800) return 3;
     if (maxWidth >= 600) return 2;
-    return 1;
+    return 1; // Show one card on small mobile screens
   }
 
   double _calculateAspectRatio(double maxWidth) {
     if (maxWidth >= 1200) return 2.5;
     if (maxWidth >= 800) return 2.0;
     if (maxWidth >= 600) return 1.8;
-    return 1.5;
+    return 3.0; // Higher ratio = more width, less height
   }
 
   Widget _buildNotificationCard(DashboardViewModel viewModel) {
     final notificationMessage = viewModel.dashboardData?.details.latestNotification?.message ?? "No new notifications";
     return Card(
-      color: Colors.green,
+      color: Colors.purple,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: ListTile(
         leading: const Icon(Icons.notifications, color: Colors.white),
@@ -367,14 +411,14 @@ class DashboardPage2 extends StatelessWidget {
     if (maxWidth >= 1200) return 4;
     if (maxWidth >= 800) return 3;
     if (maxWidth >= 600) return 2;
-    return 1;
+    return 2; // changed from 1 to 2 for mobile devices
   }
 
   double _calculateAspectRatio(double maxWidth) {
     if (maxWidth >= 1200) return 2.5;
     if (maxWidth >= 800) return 2.0;
     if (maxWidth >= 600) return 1.8;
-    return 1.5;
+    return 1.5; // You can tweak this too for better fit on mobile
   }
 
   Widget _buildNotificationCard() {
@@ -382,7 +426,7 @@ class DashboardPage2 extends StatelessWidget {
       color: Colors.green.shade100,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: const ListTile(
-        leading: Icon(Icons.notifications, color: Colors.green),
+        leading: Icon(Icons.notifications, color: Colors.purple),
         title: Text("Mercedes-Benz", style: TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text("Happy Earnings with Benztech Motors!"),
       ),
