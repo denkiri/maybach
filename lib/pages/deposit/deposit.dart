@@ -34,12 +34,16 @@ class DepositPage extends StatelessWidget {
       }
     });
 
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
+    return WillPopScope(
+        onWillPop: () async => !depositViewModel.isLoading, // disable back if loading
+    child: Stack(
+    children: [
+    Scaffold(
+    backgroundColor: Colors.grey[200],
+    body: Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: SingleChildScrollView(
+    child: Column(
             children: [
               // Personal Deposit Card
               Row(
@@ -150,9 +154,34 @@ class DepositPage extends StatelessWidget {
               const SizedBox(height: 20),
               if (depositViewModel.isLoading) const CircularProgressIndicator(),
             ],
-          ),
-        ),
-      ),
+    ),
+    ),
+    ),
+    ),
+
+    // Fullscreen modal while waiting for payment
+    if (depositViewModel.isLoading)
+    Positioned.fill(
+    child: Container(
+    color: Colors.black.withOpacity(0.5),
+    child: const Center(
+    child: Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+    CircularProgressIndicator(color: Colors.white),
+    SizedBox(height: 16),
+    Text(
+    "⏳ Tracking your payment...\nDo not close or exit the app",
+    textAlign: TextAlign.center,
+    style: TextStyle(color: Colors.white, fontSize: 16),
+    ),
+    ],
+    ),
+    ),
+    ),
+    ),
+    ],
+    ),
     );
   }
 

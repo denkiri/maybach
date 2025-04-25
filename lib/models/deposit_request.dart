@@ -31,13 +31,24 @@ class AnotherAccountDepositRequest {
 
 class DepositResponse {
   final String details;
+  final String invoiceId;
+  final String status;
 
-  DepositResponse({required this.details});
+  DepositResponse({
+    required this.details,
+    required this.invoiceId,
+    required this.status,
+  });
 
   factory DepositResponse.fromJson(Map<String, dynamic> json) {
-    return DepositResponse(details: json["details"]);
+    return DepositResponse(
+      details: json["details"],
+      invoiceId: json["invoice_id"],
+      status: json["status"],
+    );
   }
 }
+
 class AnotherAccountDepositResponse {
   final String message;
   final String invoiceId;
@@ -109,3 +120,4 @@ class TransferResponse {
     );
   }
 }
+

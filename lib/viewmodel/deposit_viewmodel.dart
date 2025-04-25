@@ -6,38 +6,86 @@ class DepositViewModel extends ChangeNotifier {
   final PaymentService _paymentService = PaymentService();
   bool isLoading = false;
   String responseMessage = "";
+  Future<void> trackPaymentStatus(String invoiceId) async {
+    final startTime = DateTime.now();
+    const timeout = Duration(minutes: 5);
+
+    while (DateTime.now().difference(startTime) < timeout) {
+      try {
+        final callbackResponse = await _paymentService.checkPaymentStatus(invoiceId);
+
+        if (callbackResponse.status == "PAID") {
+          responseMessage = "✅ Payment successful";
+          break;
+        } else if (callbackResponse.status == "CANCELLED") {
+          responseMessage = "❌ Payment was cancelled";
+          break;
+        } else {
+          responseMessage = "⏳ Waiting for payment confirmation...";
+        }
+      } catch (e) {
+        responseMessage = "⚠️ Error checking status: ${e.toString()}";
+        break;
+      }
+
+      notifyListeners();
+      await Future.delayed(Duration(seconds: 10));
+    }
+
+    if (responseMessage == "⏳ Waiting for payment confirmation...") {
+      responseMessage = "❗ Timeout: Payment still pending after 5 minutes.";
+      notifyListeners();
+    }
+
+    isLoading = false;
+    notifyListeners();
+  }
+
   Future<void> deposit(int amount, String phoneNumber) async {
     isLoading = true;
     responseMessage = "";
     notifyListeners();
 
     try {
-      DepositRequest request = DepositRequest(amount: amount, phoneNumber: phoneNumber);
-      DepositResponse response = await _paymentService.makeDeposit(request);
-      responseMessage = response.details;
-    } catch (e) {
-      responseMessage = "Deposit failed: ${e.toString()}";
-    }
+      final request = DepositRequest(amount: amount, phoneNumber: phoneNumber);
+      final response = await _paymentService.makeDeposit(request);
 
-    isLoading = false;
-    notifyListeners();
+      responseMessage = "📲 Payment request sent. Waiting for confirmation...";
+      notifyListeners();
+
+      await trackPaymentStatus(response.invoiceId);
+    } catch (e) {
+      responseMessage = "❌ ${e.toString()}";
+      isLoading = false;
+      notifyListeners();
+    }
   }
-  Future<void> anotherAccountDeposit(int amount, String phoneNumber,String recipientUsername) async {
+
+  Future<void> anotherAccountDeposit(int amount, String phoneNumber, String recipientUsername) async {
     isLoading = true;
     responseMessage = "";
     notifyListeners();
 
     try {
-      AnotherAccountDepositRequest request = AnotherAccountDepositRequest(amount: amount, phoneNumber: phoneNumber, recipientUsername: recipientUsername);
-      AnotherAccountDepositResponse response = await _paymentService.makeAnotherAccountDeposit(request);
-      responseMessage = response.message;
-    } catch (e) {
-      responseMessage = "Deposit failed: ${e.toString()}";
-    }
+      final request = AnotherAccountDepositRequest(
+        amount: amount,
+        phoneNumber: phoneNumber,
+        recipientUsername: recipientUsername,
+      );
 
-    isLoading = false;
-    notifyListeners();
+      final response = await _paymentService.makeAnotherAccountDeposit(request);
+
+      responseMessage = "📲 Payment request sent for @$recipientUsername. Waiting for confirmation...";
+      notifyListeners();
+
+      await trackPaymentStatus(response.invoiceId); // This kicks off polling
+    } catch (e) {
+      responseMessage = "❌ Deposit failed: ${e.toString()}";
+      isLoading = false;
+      notifyListeners();
+    }
   }
+
 
   Future<void> withdraw(int amount, String phoneNumber) async {
     isLoading = true;

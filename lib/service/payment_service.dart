@@ -2,14 +2,46 @@ import 'package:dio/dio.dart';
 import 'package:flutter_projects/service/unlock_exemptions.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../constants/base_url.dart';
+import '../models/callback_response.dart';
 import '../models/deposit_request.dart';
 
 class PaymentService {
   final Dio _dio = Dio();
   static const storage = FlutterSecureStorage();
+  Future<CallbackResponse> checkPaymentStatus(String invoiceId) async {
+    const String callbackUrl = "${BaseUrl.baseUrl}/payment/callback";
+
+    try {
+      String? jwtToken = await storage.read(key: 'jwt_token');
+      String? refreshToken = await storage.read(key: 'refresh_token');
+
+      final response = await _dio.post(
+        callbackUrl,
+        data: {"invoice_id": invoiceId},
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $refreshToken",
+            "JWTAUTH": "Bearer $jwtToken",
+            "Content-Type": "application/json",
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return CallbackResponse.fromJson(response.data);
+      } else {
+        throw UnlockException('Failed to get payment status (Status: ${response.statusCode})');
+      }
+    } catch (e) {
+      throw UnlockException('Error while checking payment status: ${e.toString()}');
+    }
+  }
+
+
 
   Future<DepositResponse> makeDeposit(DepositRequest request) async {
     const String baseUrl = "${BaseUrl.baseUrl}/payment/stk-push";
+
     try {
       String? jwtToken = await storage.read(key: 'jwt_token');
       String? refreshToken = await storage.read(key: 'refresh_token');
@@ -26,39 +58,18 @@ class PaymentService {
         data: request.toJson(),
       );
 
-      // Handle successful response (201)
       if (response.statusCode == 201) {
         return DepositResponse.fromJson(response.data);
+      } else {
+        throw UnlockException('Failed to initiate payment (Status: ${response.statusCode})');
       }
-      // Handle client errors (400-499)
-      else if (response.statusCode! >= 400 && response.statusCode! < 500) {
-        final errorData = response.data;
-        if (errorData is Map && errorData.containsKey('details')) {
-          throw UnlockException(errorData['details']);
-        } else {
-          throw UnlockException('Failed to process deposit (Status: ${response.statusCode})');
-        }
-      }
-      // Handle server errors (500+)
-      else {
-        throw UnlockException('Server error occurred (Status: ${response.statusCode})');
-      }
-    } on DioException catch (e) {
-      // Handle Dio-specific errors
-      if (e.response?.statusCode != null) {
-        final errorData = e.response?.data;
-        if (errorData is Map && errorData.containsKey('details')) {
-          throw UnlockException(errorData['details']);
-        }
-      }
-      throw UnlockException('Network error: ${e.message}');
     } catch (e) {
-      throw UnlockException('Unexpected error: ${e.toString()}');
+      throw UnlockException('Error during STK push: ${e.toString()}');
     }
   }
-
   Future<AnotherAccountDepositResponse> makeAnotherAccountDeposit(AnotherAccountDepositRequest request) async {
     const String baseUrl = "${BaseUrl.baseUrl}/payment/alternative-stk-push";
+
     try {
       String? jwtToken = await storage.read(key: 'jwt_token');
       String? refreshToken = await storage.read(key: 'refresh_token');
@@ -75,25 +86,19 @@ class PaymentService {
         data: request.toJson(),
       );
 
-      // Handle successful response (201)
       if (response.statusCode == 201) {
         return AnotherAccountDepositResponse.fromJson(response.data);
-      }
-      // Handle client errors (400-499)
-      else if (response.statusCode! >= 400 && response.statusCode! < 500) {
+      } else if (response.statusCode! >= 400 && response.statusCode! < 500) {
         final errorData = response.data;
         if (errorData is Map && errorData.containsKey('details')) {
           throw UnlockException(errorData['details']);
         } else {
           throw UnlockException('Failed to process deposit (Status: ${response.statusCode})');
         }
-      }
-      // Handle server errors (500+)
-      else {
+      } else {
         throw UnlockException('Server error occurred (Status: ${response.statusCode})');
       }
     } on DioException catch (e) {
-      // Handle Dio-specific errors
       if (e.response?.statusCode != null) {
         final errorData = e.response?.data;
         if (errorData is Map && errorData.containsKey('details')) {
@@ -105,7 +110,6 @@ class PaymentService {
       throw UnlockException('Unexpected error: ${e.toString()}');
     }
   }
-
   Future<WithdrawalResponse> makeWithdrawal(WithdrawalRequest request) async {
     const String baseUrl = "${BaseUrl.baseUrl}/payment/withdraw";
     try {
