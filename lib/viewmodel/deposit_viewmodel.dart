@@ -41,13 +41,13 @@ class DepositViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deposit(int amount, String phoneNumber) async {
+  Future<void> deposit(int amount, String phoneNumber,String receiptNo) async {
     isLoading = true;
     responseMessage = "";
     notifyListeners();
 
     try {
-      final request = DepositRequest(amount: amount, phoneNumber: phoneNumber);
+      final request = DepositRequest(amount: amount, phoneNumber: phoneNumber, receiptNo: receiptNo);
       final response = await _paymentService.makeDeposit(request);
 
       responseMessage = "📲 Payment request sent. Waiting for confirmation...";
@@ -61,7 +61,7 @@ class DepositViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> anotherAccountDeposit(int amount, String phoneNumber, String recipientUsername) async {
+  Future<void> anotherAccountDeposit(int amount, String phoneNumber, String recipientUsername,String receiptNo) async {
     isLoading = true;
     responseMessage = "";
     notifyListeners();
@@ -71,6 +71,7 @@ class DepositViewModel extends ChangeNotifier {
         amount: amount,
         phoneNumber: phoneNumber,
         recipientUsername: recipientUsername,
+        receiptNo: receiptNo,
       );
 
       final response = await _paymentService.makeAnotherAccountDeposit(request);

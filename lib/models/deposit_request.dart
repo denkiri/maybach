@@ -1,13 +1,15 @@
 class DepositRequest {
   final int amount;
   final String phoneNumber;
+  final String receiptNo;
 
-  DepositRequest({required this.amount, required this.phoneNumber});
+  DepositRequest({required this.amount, required this.phoneNumber, required this.receiptNo});
 
   Map<String, dynamic> toJson() {
     return {
       "amount": amount,
       "phone_number": phoneNumber,
+      "receipt_no":receiptNo,
     };
   }
 }
@@ -15,17 +17,20 @@ class AnotherAccountDepositRequest {
   final int amount;
   final String phoneNumber;
   final String recipientUsername;
+  final String receiptNo;
 
   AnotherAccountDepositRequest({
     required this.amount,
     required this.phoneNumber,
     required this.recipientUsername,
+    required this.receiptNo,
   });
 
   Map<String, dynamic> toJson() => {
     'amount': amount,
     'phone_number': phoneNumber,
     'recipient_username': recipientUsername,
+    "receipt_no":receiptNo,
   };
 }
 

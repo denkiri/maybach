@@ -38,7 +38,6 @@ class AdminDrawer extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 children: [
                   _buildNavItem(Icons.dashboard, "Dashboard",'/admin'),
-                 // _buildNavItem(Icons.account_balance, "Deposit", '/deposit'),
                   _buildExpandableTile(
                     context,
                     Icons.card_giftcard,
@@ -63,7 +62,9 @@ class AdminDrawer extends StatelessWidget {
                   _buildNavItem(Icons.ads_click, "Ads",'/upload_ads'),
                   _buildNavItem(Icons.people, "Teams", '/teams'),
                   _buildNavItem(Icons.manage_accounts, "Manage Accounts",'/manage_accounts'),
+                  _buildNavItem(Icons.account_balance, "Deposit", '/deposit'),
                   _buildNavItem(Icons.notifications, "Notifications",'/notification'),
+
                   // _buildExpandableTile(
                   //   context,
                   //   Icons.attach_money,

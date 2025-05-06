@@ -39,7 +39,7 @@ class CustomDrawer extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 children: [
                   _buildNavItem(Icons.dashboard, "Dashboard", '/dashboard'),
-                  _buildNavItem(Icons.account_balance, "Deposit", '/deposit'),
+                  // _buildNavItem(Icons.account_balance, "Deposit", '/deposit'),
                   _buildExpandableTile(
                     context,
                     Icons.card_giftcard,

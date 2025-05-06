@@ -13,11 +13,13 @@ class DepositPage extends StatelessWidget {
     // Controllers for personal deposit
     TextEditingController phoneController = TextEditingController();
     TextEditingController amountController = TextEditingController();
+    TextEditingController receiptNoController = TextEditingController();
 
     // Controllers for another account deposit
     TextEditingController recipientPhoneController = TextEditingController();
     TextEditingController recipientAmountController = TextEditingController();
     TextEditingController recipientUsernameController = TextEditingController();
+    TextEditingController recipientReceiptNoController = TextEditingController();
 
     // Show toast when response message is updated
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -55,10 +57,11 @@ class DepositPage extends StatelessWidget {
                       title: "DEPOSIT TO YOUR ACCOUNT",
                       color1: Colors.purple,
                       color2: Colors.deepPurple,
-                      fields: _buildPersonalDepositFields(phoneController, amountController),
+                      fields: _buildPersonalDepositFields(phoneController, amountController, receiptNoController),
                       onPressed: () {
                         String phone = phoneController.text.trim();
                         int amount = int.tryParse(amountController.text) ?? 0;
+                        String receiptNo = receiptNoController.text.trim();
 
                         if (phone.isEmpty) {
                           Fluttertoast.showToast(
@@ -81,8 +84,20 @@ class DepositPage extends StatelessWidget {
                           );
                           return;
                         }
+                        if (receiptNo.isEmpty) {
+                          Fluttertoast.showToast(
+                            msg: "Receipt number cannot be empty",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.TOP,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                          );
+                          return;
+                        }
 
-                        depositViewModel.deposit(amount, phone);
+
+
+                        depositViewModel.deposit(amount, phone, receiptNo);
                       },
                     ),
                   ),
@@ -105,11 +120,13 @@ class DepositPage extends StatelessWidget {
                         recipientPhoneController,
                         recipientAmountController,
                         recipientUsernameController,
+                        recipientReceiptNoController,
                       ),
                       onPressed: () {
                         String phone = recipientPhoneController.text.trim();
                         int amount = int.tryParse(recipientAmountController.text) ?? 0;
                         String username = recipientUsernameController.text.trim();
+                        String receiptNo = recipientReceiptNoController.text.trim();
 
                         if (phone.isEmpty) {
                           Fluttertoast.showToast(
@@ -143,8 +160,18 @@ class DepositPage extends StatelessWidget {
                           );
                           return;
                         }
+                        if (receiptNo.isEmpty) {
+                          Fluttertoast.showToast(
+                            msg: "Receipt number cannot be empty",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.TOP,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                          );
+                          return;
+                        }
 
-                        depositViewModel.anotherAccountDeposit(amount, phone, username);
+                        depositViewModel.anotherAccountDeposit(amount, phone, username, receiptNo);
                       },
                     ),
                   ),
@@ -238,7 +265,8 @@ class DepositPage extends StatelessWidget {
 
   List<Widget> _buildPersonalDepositFields(
       TextEditingController phoneController,
-      TextEditingController amountController) {
+      TextEditingController amountController,
+      TextEditingController receiptNoController) {
     return [
       _buildTextField(
           label: "PHONE - MPESA REGISTERED",
@@ -252,13 +280,20 @@ class DepositPage extends StatelessWidget {
           controller: amountController,
           isNumeric: true
       ),
+      const SizedBox(height: 8),
+      _buildTextField(
+          label: "RECEIPT NUMBER",
+          hint: "Enter receipt number",
+          controller: receiptNoController
+      ),
     ];
   }
 
   List<Widget> _buildAnotherAccountDepositFields(
       TextEditingController phoneController,
       TextEditingController amountController,
-      TextEditingController usernameController) {
+      TextEditingController usernameController,
+      TextEditingController receiptNoController) {
     return [
       _buildTextField(
           label: "YOUR PHONE - MPESA REGISTERED",
@@ -277,6 +312,12 @@ class DepositPage extends StatelessWidget {
           hint: "Enter amount",
           controller: amountController,
           isNumeric: true
+      ),
+      const SizedBox(height: 8),
+      _buildTextField(
+          label: "RECEIPT NUMBER",
+          hint: "Enter receipt number",
+          controller: receiptNoController
       ),
     ];
   }
