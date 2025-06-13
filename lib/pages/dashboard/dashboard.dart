@@ -78,7 +78,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _getPage() {
     switch (_currentRoute) {
       case '/dashboard':return const DashboardPage();
-      // case '/deposit':return const DepositPage();
+       case '/deposit':return const DepositPage();
       case '/silver-package':
         return const SilverPackagePage();
       case '/platinum-package':

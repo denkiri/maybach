@@ -8,27 +8,25 @@ import '../models/deposit_request.dart';
 class PaymentService {
   final Dio _dio = Dio();
   static const storage = FlutterSecureStorage();
-  Future<CallbackResponse> checkPaymentStatus(String invoiceId) async {
-    const String callbackUrl = "${BaseUrl.baseUrl}/payment/callback";
+  Future<PaymentConfirmationResponse> checkPaymentStatus(String invoiceId) async {
+    final String callbackUrl = "${BaseUrl.baseUrl}/payment/check-invoice-status?invoice_id=$invoiceId";
 
     try {
       String? jwtToken = await storage.read(key: 'jwt_token');
       String? refreshToken = await storage.read(key: 'refresh_token');
 
-      final response = await _dio.post(
+      final response = await _dio.get(
         callbackUrl,
-        data: {"invoice_id": invoiceId},
         options: Options(
           headers: {
             "Authorization": "Bearer $refreshToken",
             "JWTAUTH": "Bearer $jwtToken",
-            "Content-Type": "application/json",
           },
         ),
       );
 
       if (response.statusCode == 200) {
-        return CallbackResponse.fromJson(response.data);
+        return PaymentConfirmationResponse.fromJson(response.data);
       } else {
         throw UnlockException('Failed to get payment status (Status: ${response.statusCode})');
       }

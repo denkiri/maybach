@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/callback_response.dart';
 import '../models/deposit_request.dart';
 import '../service/payment_service.dart';
 
@@ -41,13 +42,13 @@ class DepositViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deposit(int amount, String phoneNumber,String receiptNo) async {
+  Future<void> deposit(int amount, String phoneNumber) async {
     isLoading = true;
     responseMessage = "";
     notifyListeners();
 
     try {
-      final request = DepositRequest(amount: amount, phoneNumber: phoneNumber, receiptNo: receiptNo);
+      final request = DepositRequest(amount: amount, phoneNumber: phoneNumber);
       final response = await _paymentService.makeDeposit(request);
 
       responseMessage = "📲 Payment request sent. Waiting for confirmation...";
@@ -61,7 +62,7 @@ class DepositViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> anotherAccountDeposit(int amount, String phoneNumber, String recipientUsername,String receiptNo) async {
+  Future<void> anotherAccountDeposit(int amount, String phoneNumber, String recipientUsername) async {
     isLoading = true;
     responseMessage = "";
     notifyListeners();
@@ -71,7 +72,6 @@ class DepositViewModel extends ChangeNotifier {
         amount: amount,
         phoneNumber: phoneNumber,
         recipientUsername: recipientUsername,
-        receiptNo: receiptNo,
       );
 
       final response = await _paymentService.makeAnotherAccountDeposit(request);

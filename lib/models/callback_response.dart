@@ -12,3 +12,24 @@ class CallbackResponse {
     );
   }
 }
+
+class PaymentConfirmationResponse {
+  final String id;
+  final String referenceNumber;
+  final String status;
+
+  PaymentConfirmationResponse({
+    required this.id,
+    required this.referenceNumber,
+    required this.status,
+  });
+
+  factory PaymentConfirmationResponse.fromJson(Map<String, dynamic> json) {
+    final details = json['details'];
+    return PaymentConfirmationResponse(
+      id: details['id'],
+      referenceNumber: details['reference_number'],
+      status: details['status'],
+    );
+  }
+}
